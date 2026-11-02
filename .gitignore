@@ -1,0 +1,9 @@
+node_modules/
+backend/pengaduan.db*
+backend/uploads/
+.dart_tool/
+.flutter-plugins-dependencies
+build/
+local.properties
+*.iml
+.idea/

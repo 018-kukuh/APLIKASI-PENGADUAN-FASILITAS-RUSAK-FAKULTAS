@@ -1,0 +1,11 @@
+{
+  "name": "pengaduan-fasilitas-api",
+  "version": "1.0.0",
+  "description": "REST API Aplikasi Pengaduan Fasilitas Rusak Fakultas (tanpa dependensi eksternal)",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "node test.js"
+  },
+  "engines": { "node": ">=22.13" }
+}
