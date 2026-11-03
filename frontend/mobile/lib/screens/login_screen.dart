@@ -87,11 +87,11 @@ class _LoginScreenState extends State<LoginScreen> {
       child: Stack(
         fit: StackFit.passthrough, // Column tetap selebar penuh (konten tetap di tengah)
         children: [
-          // Foto gedung: hitam-putih, sangat transparan (tekstur), fokus digeser ke bawah/samping
+          // Foto gedung: hitam-putih, transparan, fokus digeser ke bawah/samping
           // supaya tulisan "FAKULTAS TEKNIK" di gedung tidak jatuh di belakang judul.
           Positioned.fill(
             child: Opacity(
-              opacity: 0.07,
+              opacity: 0.15, // UBAH: sebelumnya 0.07 (foto lebih terlihat)
               child: ColorFiltered(
                 colorFilter: const ColorFilter.matrix(_grayscale),
                 child: Image.asset(
@@ -102,14 +102,19 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
             ),
           ),
-          // Overlay biru: paling pekat (0.92) di tengah tempat judul berada.
+          // Overlay biru: paling pekat di tengah tempat judul berada.
           Positioned.fill(
             child: DecoratedBox(
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
-                  colors: [kNavy.withAlpha(90), kNavy.withAlpha(235), kNavy.withAlpha(235), kNavy.withAlpha(90)],
+                  colors: [
+                    kNavy.withAlpha(90),
+                    kNavy.withAlpha(200), // UBAH: sebelumnya 235
+                    kNavy.withAlpha(200), // UBAH: sebelumnya 235
+                    kNavy.withAlpha(90),
+                  ],
                   stops: const [0.0, 0.35, 0.65, 1.0],
                 ),
               ),
@@ -118,38 +123,38 @@ class _LoginScreenState extends State<LoginScreen> {
           Padding(
             padding: EdgeInsets.fromLTRB(24, top + 36, 24, 84),
             child: Column(
-          children: [
-            Container(
-              padding: const EdgeInsets.all(14),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                shape: BoxShape.circle,
-                boxShadow: [
-                  BoxShadow(color: Colors.black.withAlpha(60), blurRadius: 20, offset: const Offset(0, 8)),
-                ],
-              ),
-              child: const LogoMark(size: 88),
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(14),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    shape: BoxShape.circle,
+                    boxShadow: [
+                      BoxShadow(color: Colors.black.withAlpha(60), blurRadius: 20, offset: const Offset(0, 8)),
+                    ],
+                  ),
+                  child: const LogoMark(size: 88),
+                ),
+                const SizedBox(height: 20),
+                const Text(
+                  'Pengaduan Fasilitas',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(color: Colors.white, fontSize: 26, fontWeight: FontWeight.w800),
+                ),
+                const SizedBox(height: 6),
+                const Text(
+                  'Fakultas Teknik · Universitas Madura',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(color: kGold, fontSize: 14, fontWeight: FontWeight.w600),
+                ),
+                const SizedBox(height: 10),
+                Text(
+                  'Laporkan fasilitas kampus yang rusak dan pantau proses penanganannya.',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(color: Colors.white.withAlpha(200), fontSize: 13.5),
+                ),
+              ],
             ),
-            const SizedBox(height: 20),
-            const Text(
-              'Pengaduan Fasilitas',
-              textAlign: TextAlign.center,
-              style: TextStyle(color: Colors.white, fontSize: 26, fontWeight: FontWeight.w800),
-            ),
-            const SizedBox(height: 6),
-            const Text(
-              'Fakultas Teknik · Universitas Madura',
-              textAlign: TextAlign.center,
-              style: TextStyle(color: kGold, fontSize: 14, fontWeight: FontWeight.w600),
-            ),
-            const SizedBox(height: 10),
-            Text(
-              'Laporkan fasilitas kampus yang rusak dan pantau proses penanganannya.',
-              textAlign: TextAlign.center,
-              style: TextStyle(color: Colors.white.withAlpha(200), fontSize: 13.5),
-            ),
-          ],
-        ),
           ),
         ],
       ),
@@ -209,6 +214,19 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
             const SizedBox(height: 22),
             FilledButton(
+              // UBAH: warna tombol (normal / ditekan / loading)
+              style: ButtonStyle(
+                backgroundColor: WidgetStateProperty.resolveWith<Color>((states) {
+                  if (states.contains(WidgetState.disabled)) {
+                    return Colors.grey; // setelah diklik (sedang loading)
+                  }
+                  if (states.contains(WidgetState.pressed)) {
+                    return kGold; // saat ditekan
+                  }
+                  return kNavy; // warna normal
+                }),
+                foregroundColor: WidgetStateProperty.all(Colors.white),
+              ),
               onPressed: _loading ? null : _submit,
               child: _loading
                   ? const SizedBox(
